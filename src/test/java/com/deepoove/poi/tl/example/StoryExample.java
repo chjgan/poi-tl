@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.deepoove.poi.CreateChartServiceImpl;
+import com.deepoove.poi.util.BytePictureUtils;
+import org.jfree.data.category.CategoryDataset;
 import org.junit.Test;
 
 import com.deepoove.poi.XWPFTemplate;
@@ -61,6 +64,11 @@ public class StoryExample {
 		SegmentData s6 = new SegmentData();
 		s6.setTitle("毒舌的自己");
 		s6.setContent("良言一句暖三冬，恶语伤人六月寒，不要以为你的毒舌是幽默，不分场合和对象的毒舌，不仅伤害了他人，也暴露了自己的无知。你有你的犀利，别人也有不容侵犯的骄傲，毒舌的人碰到谁，谁都想给他一巴掌。");
+		double[][] data1 = new double[][] { { 672, 766, 223, 540, 126 } };
+		String[] rowKeys = { "苹果" };
+		String[] columnKeys = { "北京", "上海", "广州", "成都", "深圳" };
+		CategoryDataset dataset = CreateChartServiceImpl.getBarData(data1, rowKeys, columnKeys);
+		s6.setPicture(new PictureRenderData(510,412,".jpg", BytePictureUtils.getBufferByteArray(CreateChartServiceImpl.getBarChart(dataset, "x坐标", "y坐标", "柱状图", "bar.png"))));
 		segments.add(s6);
 		
 		
