@@ -177,6 +177,8 @@ public class CreateChartServiceImpl {
                 false, // 是否生成工具
                 false // 是否生成URL链接
         );
+        // 主标题对象 主标题对象是 TextTitle 类型
+        chart.setTitle(new TextTitle(chartTitle, new Font("隶书", Font.BOLD,25)));
         Font labelFont = new Font("SansSerif", Font.TRUETYPE_FONT, 12);
         /*
          * VALUE_TEXT_ANTIALIAS_OFF表示将文字的抗锯齿关闭,
@@ -256,6 +258,8 @@ public class CreateChartServiceImpl {
         plot.setRenderer(renderer);
         // 设置柱的透明度
         plot.setForegroundAlpha(1.0f);
+        //图例设置
+        chart.getLegend().setItemFont(new Font("宋体",Font.PLAIN,12));
 
         FileOutputStream fos_jpg = null;
         try {
@@ -287,6 +291,8 @@ public class CreateChartServiceImpl {
                 false, // 是否生成工具
                 false // 是否生成URL链接
         );
+        // 主标题对象 主标题对象是 TextTitle 类型
+        chart.setTitle(new TextTitle(chartTitle, new Font("隶书", Font.BOLD,25)));
         Font labelFont = new Font("SansSerif", Font.TRUETYPE_FONT, 12);
         /*
          * VALUE_TEXT_ANTIALIAS_OFF表示将文字的抗锯齿关闭,
@@ -366,6 +372,8 @@ public class CreateChartServiceImpl {
         plot.setRenderer(renderer);
         // 设置柱的透明度
         plot.setForegroundAlpha(1.0f);
+        //图例设置
+        chart.getLegend().setItemFont(new Font("宋体",Font.PLAIN,12));
 
         try {
             return chart.createBufferedImage(510, 412, 2, null);
@@ -401,7 +409,8 @@ public class CreateChartServiceImpl {
                 false, // 是否生成工具
                 false // 是否生成URL链接
         );
-
+        // 主标题对象 主标题对象是 TextTitle 类型
+        chart.setTitle(new TextTitle(chartTitle, new Font("隶书", Font.BOLD,25)));
         CategoryPlot plot = chart.getCategoryPlot();
         // 数据轴精度
         NumberAxis vn = (NumberAxis) plot.getRangeAxis();
@@ -419,11 +428,13 @@ public class CreateChartServiceImpl {
         domainAxis.setLabelFont(labelFont);// 轴标题
         domainAxis.setTickLabelFont(labelFont);// 轴数值
 
-        domainAxis.setMaximumCategoryLabelWidthRatio(0.8f);// 横轴上的 Lable 是否完整显示
+//        domainAxis.setMaximumCategoryLabelWidthRatio(0.8f);// 横轴上的 Lable 是否完整显示
         // domainAxis.setVerticalCategoryLabels(false);
         plot.setDomainAxis(domainAxis);
 
         ValueAxis rangeAxis = plot.getRangeAxis();
+        rangeAxis.setLabelFont(labelFont);
+        rangeAxis.setTickLabelFont(labelFont);
         // 设置最高的一个 Item 与图片顶端的距离
         rangeAxis.setUpperMargin(0.15);
         // 设置最低的一个 Item 与图片底端的距离
@@ -439,7 +450,6 @@ public class CreateChartServiceImpl {
 
         // 设置柱的颜色
         renderer.setSeriesPaint(0, Color.GREEN);
-        renderer.setSeriesPaint(1, new Color(0, 0, 255));
         // 设置每个地区所包含的平行柱的之间距离
         renderer.setItemMargin(0.5);
         // 显示每个柱的数值，并修改该数值的字体属性
@@ -451,6 +461,8 @@ public class CreateChartServiceImpl {
         plot.setRenderer(renderer);
         // 设置柱的透明度
         plot.setForegroundAlpha(0.6f);
+        //图例设置
+        chart.getLegend().setItemFont(new Font("宋体",Font.PLAIN,12));
 
         FileOutputStream fos_jpg = null;
         try {
@@ -537,7 +549,8 @@ public class CreateChartServiceImpl {
         // // 设置分饼颜色
         plot.setSectionPaint(pieKeys[0], new Color(244, 194, 144));
         plot.setSectionPaint(pieKeys[1], new Color(144, 233, 144));
-
+        //图例设置
+        chart.getLegend().setItemFont(new Font("宋体",Font.PLAIN,12));
         FileOutputStream fos_jpg = null;
         try {
             // 文件夹不存在则创建
@@ -641,7 +654,8 @@ public class CreateChartServiceImpl {
 
         lineandshaperenderer.setBaseShapesVisible(true); // series 点（即数据点）可见
         lineandshaperenderer.setBaseLinesVisible(true); // series 点（即数据点）间有连线可见
-
+        //图例设置
+        chart.getLegend().setItemFont(new Font("宋体",Font.PLAIN,12));
         // 显示折点数据
         // lineandshaperenderer.setBaseItemLabelGenerator(new
         // StandardCategoryItemLabelGenerator());
@@ -772,6 +786,9 @@ public class CreateChartServiceImpl {
         plot.setRenderer(renderer);
         // 设置柱的透明度(如果是3D的必须设置才能达到立体效果，如果是2D的设置则使颜色变淡)
         // plot.setForegroundAlpha(0.65f);
+
+        //图例设置
+        chart.getLegend().setItemFont(new Font("宋体",Font.PLAIN,12));
 
         FileOutputStream fos_jpg = null;
         try {
