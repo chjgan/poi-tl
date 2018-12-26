@@ -1,18 +1,17 @@
 package com.deepoove.poi.tl.example;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.deepoove.poi.CreateChartServiceImpl;
+import com.deepoove.poi.XWPFTemplate;
+import com.deepoove.poi.data.DocxRenderData;
+import com.deepoove.poi.data.PictureRenderData;
 import com.deepoove.poi.util.BytePictureUtils;
 import org.jfree.data.category.CategoryDataset;
 import org.junit.Test;
 
-import com.deepoove.poi.XWPFTemplate;
-import com.deepoove.poi.data.DocxRenderData;
-import com.deepoove.poi.data.PictureRenderData;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 一篇文章
@@ -23,7 +22,7 @@ public class StoryExample {
 	
 	@Test
 	public void testStoryExample() throws Exception {
-
+		long start = System.currentTimeMillis();
 		StoryData data = new StoryData();
 		data.setStoryName("今天开始，和过去的自己说再见");
 		data.setStoryAuthor("逸遥");
@@ -82,7 +81,8 @@ public class StoryExample {
 		out.flush();
 		out.close();
 		template.close();
-
+		long time = System.currentTimeMillis() - start;
+		System.out.println("耗时："+time);
 	}
 
 }
