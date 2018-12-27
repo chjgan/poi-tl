@@ -1,8 +1,5 @@
 package com.deepoove.poi;
 
-import com.lowagie.text.Font;
-import com.lowagie.text.pdf.BaseFont;
-import fr.opensagres.xdocreport.itext.extension.font.IFontProvider;
 import org.apache.commons.collections.MapUtils;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xwpf.converter.core.utils.StringUtils;
@@ -10,9 +7,7 @@ import org.apache.poi.xwpf.converter.pdf.PdfConverter;
 import org.apache.poi.xwpf.converter.pdf.PdfOptions;
 import org.apache.poi.xwpf.usermodel.*;
 
-import java.awt.*;
 import java.io.*;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,7 +83,7 @@ public class WordToPDF {
             targetStream = new FileOutputStream(target);
             doc = new XWPFDocument(sourceStream);
             PdfOptions options = PdfOptions.create();
-            //中文字体处理
+            /*//中文字体处理
             options.fontProvider(new IFontProvider() {
                 public Font getFont(String familyName, String encoding, float size, int style, Color color) {
                     try {
@@ -102,7 +97,7 @@ public class WordToPDF {
                         return null;
                     }
                 }
-            });
+            });*/
             PdfConverter.getInstance().convert(doc, targetStream, options);
 //            File file = new File(tmp);
 //            file.delete();  //刪除word文件
@@ -121,9 +116,9 @@ public class WordToPDF {
         String filepath = "D:\\workspace\\eclipseworkspace\\poi-tl\\out_story.docx";
         String outpath = "F:\\1\\我是结果.pdf";
 
-//        wordConverterToPdf(filepath,outpath,"STSong-Light","UniGB-UCS2-H");
+        wordConverterToPdf(filepath,outpath,"STSong-Light","UniGB-UCS2-H");
 
-        InputStream source;
+       /* InputStream source;
         OutputStream target;
         try {
             source = new FileInputStream(filepath);
@@ -134,15 +129,15 @@ public class WordToPDF {
             PdfOptions options = PdfOptions.create();
 
             wordConverterToPdf(source, target, options, params);
-            long time = System.currentTimeMillis() - start;
-            System.out.println("耗时："+time);
+
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-
+        }*/
+        long time = System.currentTimeMillis() - start;
+        System.out.println("耗时："+time);
     }
 }
