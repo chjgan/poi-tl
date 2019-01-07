@@ -4,17 +4,8 @@ import com.deepoove.poi.data.MiniTableRenderData;
 import com.deepoove.poi.data.PictureRenderData;
 
 public class ModelData {
-    private String title;
     private PictureRenderData picture;
     private MiniTableRenderData table;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public PictureRenderData getPicture() {
         return picture;

@@ -1,6 +1,16 @@
 package com.deepoove.poi;
 
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.SimpleBookmark;
 import org.apache.commons.collections.MapUtils;
+import org.apache.pdfbox.io.RandomAccessBuffer;
+import org.apache.pdfbox.pdfparser.PDFParser;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageDestination;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDDocumentOutline;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDOutlineItem;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDOutlineNode;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xwpf.converter.core.utils.StringUtils;
 import org.apache.poi.xwpf.converter.pdf.PdfConverter;
@@ -8,6 +18,8 @@ import org.apache.poi.xwpf.converter.pdf.PdfOptions;
 import org.apache.poi.xwpf.usermodel.*;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -110,13 +122,49 @@ public class WordToPDF {
         }
     }
 
+    public static int getPdfPage(String filepath){
+        int pagecount = 0;
+        PdfReader reader;
+        try {
+            reader = new PdfReader(filepath);
+            pagecount= reader.getNumberOfPages();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("pdf的总页数为:" + pagecount);
+        return pagecount;
+    }
 
-    public static void main(String[] args) {
+    private static void showBookmark ( Map bookmark ) {
+        System.out.println ( bookmark.get ( "Title" )) ;
+        ArrayList kids = (ArrayList) bookmark.get ( "Kids" ) ;
+        if ( kids == null )
+            return ;
+        for (Iterator i = kids.iterator (); i.hasNext () ; ) {
+            showBookmark (( Map ) i.next ()) ;
+        }
+    }
+
+    private static void readPdfPage(String filepath) throws Exception{
+        PdfReader reader = new PdfReader ( filepath ) ;
+        List list = SimpleBookmark.getBookmark ( reader ) ;
+        for ( Iterator i = list.iterator () ; i.hasNext () ; ) {
+            showBookmark (( Map ) i.next ()) ;
+        }
+    }
+
+
+    public static void main(String[] args) throws Exception{
         long start = System.currentTimeMillis();
-        String filepath = "D:\\workspace\\eclipseworkspace\\poi-tl\\out_story.docx";
-        String outpath = "F:\\1\\我是结果.pdf";
+        String filepath = "F:\\1\\报告.docx";
+        String outpath = "F:\\1\\pdf1.pdf";
+//
+//        wordConverterToPdf(filepath,outpath,"STSong-Light","UniGB-UCS2-H");
+//
+//        getPdfPage(outpath);
+//        readPdfPage(outpath);
+        readPDF(outpath);
 
-        wordConverterToPdf(filepath,outpath,"STSong-Light","UniGB-UCS2-H");
 
        /* InputStream source;
         OutputStream target;
@@ -139,5 +187,47 @@ public class WordToPDF {
         }*/
         long time = System.currentTimeMillis() - start;
         System.out.println("耗时："+time);
+    }
+
+    public static void printBookmarks(PDOutlineNode bookmark, String indentation) throws IOException{
+        PDOutlineItem current = bookmark.getFirstChild();
+        while(current != null){
+            int pages = 0;
+            if(current.getDestination() instanceof PDPageDestination){
+                PDPageDestination pd = (PDPageDestination) current.getDestination();
+                pages = pd.retrievePageNumber() + 1;
+            }
+            if (current.getAction()  instanceof PDActionGoTo) {
+                PDActionGoTo gta = (PDActionGoTo) current.getAction();
+                if (gta.getDestination() instanceof PDPageDestination) {
+                    PDPageDestination pd = (PDPageDestination) gta.getDestination();
+                    pages = pd.retrievePageNumber() + 1;
+                }
+            }
+            if (pages == 0) {
+                System.out.println(indentation+current.getTitle());
+            }else{
+                System.out.println(indentation+current.getTitle()+"  "+pages);
+            }
+            printBookmarks( current, indentation + "    " );
+            current = current.getNextSibling();
+        }
+    }
+    public static void readPDF(String filePath){
+        File file = new File(filePath);
+        PDDocument doc = null;
+        FileInputStream  fis = null;
+        try {
+            fis = new FileInputStream(file);
+            PDFParser parser = new PDFParser(new RandomAccessBuffer(fis));
+            parser.parse();
+            doc = parser.getPDDocument();
+            PDDocumentOutline outline = doc.getDocumentCatalog().getDocumentOutline();
+            if (outline != null) {
+                printBookmarks(outline, "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
